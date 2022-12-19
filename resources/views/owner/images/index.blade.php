@@ -14,23 +14,28 @@
                         <button onclick="location.href='{{ route('owner.images.create') }}'"
                             class="text-white bg-purple-500 border-0 py-2 px-8 focus:outline-none hover:bg-purple-600 rounded text-lg">新規登録</button>
                     </div>
-                    @foreach ($images as $image)
-                        <div class="w-1/4 p-4">
-                            <a href="{{ route('owner.images.edit', ['image' => $image->id]) }}">
-                                <div class="border rounded-md p-4">
-                                    <div class="text-xl">{{ $image->title }}</div>
-                                    <x-thumbnail :filename="$shop->filename" type="products" />
-                                    {{-- <div>
+
+                    <div class="flex flex-wrap">
+                        @foreach ($images as $image)
+                            <div class="w-1/4 p-4">
+                                <a href="{{ route('owner.images.edit', ['image' => $image->id]) }}">
+                                    <div class="border rounded-md p-4">
+                                        <div class="text-xl">{{ $image->title }}</div>
+                                        <x-thumbnail :filename="$image->filename" type="products" />
+                                        {{-- <div>
                                         @if (empty($shop->filename))
                                             <img src="{{ asset('images/no_image.jpg') }}">
                                         @else
                                             <img src="{{ asset('storage/shops/' . $shop->filename) }}">
                                         @endif
                                     </div> --}}
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    </div>
+
+
                     {{ $images->links() }}
                 </div>
             </div>
