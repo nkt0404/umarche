@@ -89,6 +89,6 @@ class ShopController extends Controller
             ->with([
                 'message' => '店舗情報を更新しました。',
                 'status' => 'info'
-            ]);;
+            ]);
     }
 }
