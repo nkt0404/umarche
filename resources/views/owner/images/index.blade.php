@@ -22,13 +22,6 @@
                                     <div class="border rounded-md p-2 md:p-4">
                                         <x-thumbnail :filename="$image->filename" type="products" />
                                         <div class="text-xl">{{ $image->title }}</div>
-                                        {{-- <div>
-                                        @if (empty($shop->filename))
-                                            <img src="{{ asset('images/no_image.jpg') }}">
-                                        @else
-                                            <img src="{{ asset('storage/shops/' . $shop->filename) }}">
-                                        @endif
-                                    </div> --}}
                                     </div>
                                 </a>
                             </div>
