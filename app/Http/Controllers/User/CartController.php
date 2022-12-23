@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
+use App\Jobs\SendThanksMail;
 
 class CartController extends Controller
 {
@@ -56,26 +57,19 @@ class CartController extends Controller
     {
         $items = Cart::where('user_id', Auth::id())->get();
         $products = CartService::getItemsInCart($items);
-
-
         $user = User::findOrFail(Auth::id());
+
+        SendThanksMail::dispatch($products, $user);
+
         $products = $user->products;
 
         $lineItems = [];
         foreach ($products as $product) {
-            //$quantity = '';
             $quantity = Stock::where('product_id', $product->id)->sum('quantity');
 
             if ($product->pivot->quantity > $quantity) {
                 return redirect()->route('user.cart.index');
             } else {
-                // $lineItem = [
-                //     'name' => $product->name,
-                //     'description' => $product->information,
-                //     'amount' => $product->price,
-                //     'currency' => 'jpy',
-                //     'quantity' => $product->pivot->quantity,
-                // ];
                 $lineItem = [
                     'price_data' => [
                         'currency' => 'jpy',
@@ -98,8 +92,6 @@ class CartController extends Controller
                 'quantity' => $product->pivot->quantity * -1
             ]);
         }
-
-        //dd('test');
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -125,8 +117,6 @@ class CartController extends Controller
 
     public function cancel()
     {
-        //dd('test');
-
         $user = User::findOrFail(Auth::id());
 
         foreach ($user->products as $product) {
